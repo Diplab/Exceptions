@@ -16,7 +16,7 @@ CH.12  Error handling with Exceptions
 - [建造自己的 exceptions](#建造自己的 exceptions)
 - [Catch all the exceptions](#Catch all the exceptions)
 - [重擲異常](#重擲異常)
-
+- [Checked Exception的爭議](#Checked Exception的爭議)
 
 -
 ## 前言
@@ -106,9 +106,9 @@ Java將所有的Exception宣告成物件，且全部都是屬於Throwable物件�
 ### RuntimeException
 - 屬於Unchecked Exception
 - 編成上的錯誤 EX:分母為零 傳入參數型態不符等......
-- 幾乎不需要自行捕捉RuntimeException
-- RuntimeException及其子類別是JVM在執行程式時，由執行系統自動引發的執行時期例外。
-
+- 不需要自行throw此Exception
+- 不需自行處理但若RuntimeException及其子類別沒有處理則會一直往外丟最後由JVM來處理。
+![img/002.JPG](img/002.JPG)
 
 
 ### Exception
@@ -116,6 +116,7 @@ Java將所有的Exception宣告成物件，且全部都是屬於Throwable物件�
 - 執行時預期之外的情況 EX:欲開啟的檔案不存在
 - RuntimeException 之外的Exception的子類別都屬於此類
 - 需要由programmer自行進行檢驗及處理
+- Java 強迫一定要處理的，如不處理，則 Compile 時期就會發生錯誤訊息
 
 ##Throw
 ``` java
@@ -144,7 +145,7 @@ public void f() throws Exception{
 	} …
 	finally {
 		善後處理程式碼;
-		(比如：將霸佔的記憶體歸還，或已開啟的檔案關閉等等)
+		(比如：已開啟的檔案關閉)	
 	}
 其中眾多catch區塊只有第一個捕捉到例外的區塊會被執行。其餘則不會被執行。
 而finally區塊無論如何都一定會被執行
@@ -277,7 +278,55 @@ public class CatchAll {
 }
 ```
 ##重擲異常
-有時候我們會想要重擲異常
+將異常重新擲出，會使該異常移動到下一個更高層的exception handler
+
+```java
+public class ReThrowing {
+	
+	public static void f() throws Exception{
+		System.out.println("originating the exception in f()");
+		throw new Exception("thrown from f()");
+	}
+	public static void g() throws Exception{
+		try{
+			f();
+		}catch(Exception e){
+			System.out.println("Inside g() ,e.printStackTrace");
+			e.printStackTrace(System.out);
+			throw e;
+		}
+	}
+	
+	public static void h() throws Exception{
+		try{
+			f();
+		}catch(Exception e){
+			System.out.println("Inside h(),e.printStackTrace()");
+			e.printStackTrace(System.out);
+			throw (Exception)e.fillInStackTrace();  //將當前的Stack的資訊填入舊的異常物件並以Throwable回傳
+								//只會trace到重新擲出點
+		}
+	}
+	public static void main(String[] args) {
+		try{
+			g();
+		}catch(Exception e){
+			System.out.println("main:printStackTrace()");
+			e.printStackTrace(System.out);
+		}
+		try{
+			h();
+		}catch(Exception e){
+			System.out.println("main:printStackTrace()");
+			e.printStackTrace(System.out);
+		}
+	}
+
+}
+```
+
+
+##Checked Exception的爭議
 
 
 
