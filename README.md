@@ -244,7 +244,7 @@ public class ExceptionsWithString {
 ```
 
 ##Catch all the exceptions
-在try{}catch(){} 的格式中 在所有的catch後面額外增加一個 catch(Exception e){}，可以捕捉到你所沒有料想到的exceptions
+在try{}catch(){} 的格式中 在最後一個catch之後額外增加一個 catch(Exception e){}，可以捕捉到你原先在設計程式時所沒有料想到的exceptions
 
 ```
 public class CatchAll {
