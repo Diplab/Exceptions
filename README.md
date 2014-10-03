@@ -17,6 +17,7 @@ CH.12  Error handling with Exceptions
 - [Catch all the exceptions](#Catch all the exceptions)
 - [重擲異常](#重擲異常)
 - [Checked Exception的爭議](#Checked Exception的爭議)
+- [TODO](#todo)
 
 -
 ## 前言
@@ -328,6 +329,10 @@ public class ReThrowing {
 
 ##Checked Exception的爭議
 
+## TODO
+
+- ![todo1](img/Todo1.png)
+- ![todo2](img/Todo2.png)
 
 
 
