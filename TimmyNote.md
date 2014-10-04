@@ -62,12 +62,15 @@ See the [**Oracle Documentation**][Programming With Assertions].
 			}
 			```
 		* Another good candidate for an assertion is a switch statement with no default case. 
+			
 			```java
 			default:
 			    assert false : suit;
 			```
+			
 	+ Control-Flow Invariants
 		* place an assertion at any location you assume will not be reached.
+			
 			```java
 			void foo() {
 			    for (...) {
@@ -77,6 +80,7 @@ See the [**Oracle Documentation**][Programming With Assertions].
 			    assert false; // Execution should never reach this point!
 			}
 			```
+
 	+ Preconditions, Postconditions, and Class Invariants
 		* Preconditions — what must be true when a method is invoked.
 			- Lock-Status Preconditions — preconditions concerning whether or not a given lock is held.
