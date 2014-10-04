@@ -3,6 +3,7 @@ Yu-Ting Chen's Note
 
 # Content
 - [Assertion](#assertion)
+- [try-with-resources](#try-with-resources)
 
 # Assertion
 See the [**Oracle Documentation**][Programming With Assertions].
@@ -81,9 +82,68 @@ See the [**Oracle Documentation**][Programming With Assertions].
 		* Postconditions — what must be true after a method completes successfully.
 		* Class invariants — what must be true about each instance of a class.
 
+# try-with-resources
+See the [**Java Tutorail**][try-with-resources].
+
+The try-with-resources statement is a try statement that declares one or more resources. 
+- A resource is an object that must be closed after the program is finished with it. 
+- The try-with-resources statement ensures that each resource is closed at the end of the statement. 
+- Any object that implements `java.lang.AutoCloseable`
+	+ subinterface `java.io.Closeable`
+- "ReadFile.java":
+
+	```java
+	import java.io.BufferedReader;
+	import java.io.FileNotFoundException;
+	import java.io.FileReader;
+	import java.io.IOException;
+
+	public class ReadFile {
+
+		public static void main(String[] args) throws FileNotFoundException,
+				IOException {
+			String path = "src/ReadFile.java";
+			try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+				String input = null;
+				while ((input = br.readLine()) != null)
+					System.out.println(input);
+			}
+		}
+
+	}
+
+	```
+- Prior to SE 7, use below:
+
+	```java
+	import java.io.BufferedReader;
+	import java.io.FileNotFoundException;
+	import java.io.FileReader;
+	import java.io.IOException;
+
+	public class ReadFileWithoutTryWithResource {
+
+		public static void main(String[] args) throws FileNotFoundException,
+				IOException {
+			String path = "src/ReadFile.java";
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			try {
+				String input = null;
+				while ((input = br.readLine()) != null)
+					System.out.println(input);
+			} finally {
+				br.close();
+			}
+		}
+
+	}
+
+	```
 
 # Reference
 - [Programming With Assertions][Programming With Assertions]
+- [Java Tutorail][try-with-resources]
 
 
 [Programming With Assertions]: http://docs.oracle.com/javase/7/docs/technotes/guides/language/assert.html
+[try-with-resources]: http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
