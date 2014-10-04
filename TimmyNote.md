@@ -4,6 +4,7 @@ Yu-Ting Chen's Note
 # Content
 - [Assertion](#assertion)
 - [try-with-resources](#try-with-resources)
+- [Restriction of Try](#restriction-of-try)
 
 # Assertion
 See the [**Oracle Documentation**][Programming With Assertions].
@@ -139,6 +140,49 @@ The try-with-resources statement is a try statement that declares one or more re
 	}
 
 	```
+
+# Restriction of Try
+Observe below figure and compare it with code 
+
+![layout](img/layout.jpg)
+
+```java
+
+class ExceptionA extends Exception{}
+class ExceptionB extends Exception{}
+class ExceptionC extends Exception{}
+class ExceptionD extends ExceptionA{}
+
+abstract class ClassA {
+	abstract void method() throws ExceptionA, ExceptionC;
+}
+
+interface InterfaceA{
+	void method() throws ExceptionB;
+}
+
+interface InterfaceB{
+	void method() throws ExceptionA;
+}
+
+class ClassB extends ClassA
+{
+	//(OK) void method() throws ExceptionA, ExceptionC {}
+	//(OK) void method() throws ExceptionA{}
+	//(OK) void method()
+	//(OK) void method() throws ExceptionD{}
+	@Override
+	void method() throws ExceptionD{}
+	
+}
+
+//(FAIL)
+//abstract class ClassC extends ClassA implements InterfaceA{}
+
+```
+
+- The restriction on exceptions does not apply to constructors. 
+- Use the concept of polymorphism to seize the reasons for these restrictions.
 
 # Reference
 - [Programming With Assertions][Programming With Assertions]
